@@ -87,7 +87,7 @@ const Courses = () => {
                 </div>
 
             </div>
-            <div className="flex justify-center -mt-5">
+            <div className="flex justify-center -mt-5 py-8">
                 <Link to={'/courses'}>
                     <div className="w-max">
                         <ButtonStrong text={'View All'} />

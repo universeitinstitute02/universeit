@@ -2,7 +2,7 @@
 import { Link } from 'react-router-dom';
 import ButtonLight from '../../../Shared/Button/ButtonLight';
 import ButtonStrong from '../../../Shared/Button/ButtonStrong';
-const Banner = ({ bannerImg = '', data = {} }) => {
+const Banner = ({  data = {} }) => {
     const [FirstTitleArray, SecondTitleArray] = data.title.split(' ').reduce(
         (acc, word, index, array) => {
             index < array.length - 2 ? acc[0].push(word) : acc[1].push(word);
@@ -29,7 +29,7 @@ const Banner = ({ bannerImg = '', data = {} }) => {
                     </div>
                 </div>
                 <div className="hidden md:block">
-                    <img className="w-full h-full object-cover" src={bannerImg} alt="" />
+                    <img className="w-full h-full object-cover p-16 mr-20" src="/uiti-hero.png" alt="Banner" />
                 </div>
             </div>
         </div>
