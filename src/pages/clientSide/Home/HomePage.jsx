@@ -12,6 +12,7 @@ import useAxiosPublic from '../../../hooks/useAxiosPublic';
 import { useQuery } from '@tanstack/react-query';
 import Loading from '../../../Shared/Loading/Loading';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Testimonial from '../../../components/clientSide/Testimonials/Testimonial';
 
 const HomePage = () => {
     window.scrollTo(0, 0);
@@ -109,7 +110,8 @@ const HomePage = () => {
                 variants={scrollAnimationVariants}
                 viewport={{ once: false, amount: 0.2 }}
             >
-                <Testimonials />
+                {/* <Testimonials /> */}
+                <Testimonial />
             </motion.div>
             <motion.div
                 initial="hidden"
