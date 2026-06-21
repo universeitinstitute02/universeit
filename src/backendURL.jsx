@@ -1,2 +1,2 @@
-// export const backendURL = 'https://universe-it-server.vercel.app'
-export const backendURL = 'http://localhost:5000'
+export default   'https://universe-it-server.vercel.app/'
+// export default  'http://localhost:5000'
