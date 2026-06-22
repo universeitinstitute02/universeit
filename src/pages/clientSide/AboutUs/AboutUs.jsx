@@ -1,12 +1,11 @@
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
-import Testimonials from "../../../components/clientSide/Testimonials/Testimonials";
-import HomeFreeSeminar from "../../../components/clientSide/HomeFreeSeminar/HomeFreeSeminar";
 import { useLocation } from "react-router-dom";
 import AboutBanner from "./AboutBanner";
-import Services from "../../../components/clientSide/Services/Services";
 import SuccessStories from "../../../components/clientSide/SuccessStories/SuccessStories";
-import TeamMember from "./TeamMember";
+import Testimonials from "../../../components/clientSide/Testimonials/Testimonials";
+import CeoMessage from "../../../components/clientSide/CeoMessage/CeoMessage";
+import Services from "../../../components/clientSide/Services/Services";
 import { useEffect } from "react";
 const AboutUs = () => {
   window.scrollTo(0, 0);
@@ -45,7 +44,7 @@ const AboutUs = () => {
         variants={scrollAnimationVariants}
         viewport={{ once: false, amount: 0.2 }}
       >
-        <TeamMember></TeamMember>
+        <CeoMessage />
       </motion.div>
 
       <motion.div
@@ -56,15 +55,6 @@ const AboutUs = () => {
         viewport={{ once: false, amount: 0.2 }}
       >
         <Services />
-      </motion.div>
-
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        variants={scrollAnimationVariants}
-        viewport={{ once: false, amount: 0.2 }}
-      >
-        <HomeFreeSeminar />
       </motion.div>
 
       <motion.div

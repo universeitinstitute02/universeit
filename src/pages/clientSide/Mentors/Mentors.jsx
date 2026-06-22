@@ -62,10 +62,6 @@ const Mentors = () => {
                   />
                 </div>
               </div>
-              {/* CEO બેજ */}
-              <span className="absolute bottom-0 right-0 bg-amber-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md uppercase tracking-wider">
-                Founder
-              </span>
             </div>
             <div className="mt-5 space-y-2">
               <h2 className="text-2xl font-bold text-slate-800 tracking-tight capitalize">

@@ -9,8 +9,8 @@ const CeoMessage = () => {
         <div className="w-full md:w-2/5 flex justify-center">
           <div className="relative w-64 h-64 md:w-full md:h-[400px] rounded-xl overflow-hidden shadow-md group">
             <img 
-              src="https://via.placeholder.com/400x500" // Replace with your actual image URL
-              alt="Md. [Your Name], CEO" 
+              src="https://res.cloudinary.com/dxvacpgrv/image/upload/v1734868951/UniverseSoftTech/Image/fcybr3s74j9fhwnver6c.jpg" // Replace with your actual image URL
+              alt="ENGR. MD. GOLAM KIBRIYA, CEO" 
               className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
             />
             {/* Optional decorative overlay */}
@@ -22,13 +22,13 @@ const CeoMessage = () => {
         <div className="w-full md:w-3/5 space-y-6">
           {/* Section Title */}
           <div className="space-y-2">
-            <span className="text-sm font-semibold uppercase tracking-wider text-blue-600">
+            <span className="text-sm font-semibold uppercase tracking-wider text-primary">
               Message From CEO
             </span>
             <h2 className="text-2xl md:text-3xl font-bold text-gray-800 leading-tight">
               Empowering Individuals with Practical Skills
             </h2>
-            <div className="w-16 h-1 bg-blue-600 rounded"></div>
+            <div className="w-16 h-1 bg-primary rounded"></div>
           </div>
 
           {/* Main Message Body */}
@@ -51,7 +51,7 @@ const CeoMessage = () => {
           {/* CEO Signature / Designation */}
           <div className="pt-4 border-t border-gray-100">
             <h4 className="text-lg font-bold text-gray-900">ENGR. MD. GOLAM KIBRIYA</h4>
-            <p className="text-sm font-medium text-blue-600">Chief Executive Officer (CEO)</p>
+            <p className="text-sm font-medium text-primary">Chief Executive Officer (CEO)</p>
             <p className="text-xs text-gray-400 mt-0.5">Universe IT Institute</p>
           </div>
         </div>
