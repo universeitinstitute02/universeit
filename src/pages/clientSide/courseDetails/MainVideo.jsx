@@ -9,7 +9,7 @@ const MainVideo = ({ videoUrl }) => {
 
 
     return (
-        <div className="relative w-[80vw] h-[45.9vw] z-10 sm:w-full sm:h-[37vw] lg:h-[470px]  lg:mx-auto rounded-2xl p-2 bg-black border-2 border-black">
+        <div className="relative z-10 h-full min-h-[220px] w-full rounded-2xl border-2 border-black bg-black p-2 sm:min-h-[320px] lg:min-h-0">
             <div onClick={handleOpen} className='absolute w-full h-full bg-transparent z-10 cursor-pointer'>
 
             </div>

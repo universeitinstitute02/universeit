@@ -106,7 +106,7 @@ const CourseDetailsTab = () => {
     courseCategories?.find((category) => category?._id === TabName) || {};
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div>
       {/* Main Tabs Container */}
       <div className="overflow-hidden bg-white rounded-2xl shadow-sm border border-gray-100 p-4 md:p-6 mb-12">
         <Tabs

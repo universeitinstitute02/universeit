@@ -1,11 +1,10 @@
-/* eslint-disable react/prop-types */
-import logo from "../../../assets/logo/mainLogo.png";
-import logoWhite from "../../../assets/logo/whiteLogo.png"; // কালো ব্যাকগ্রাউন্ডের জন্য হোয়াইট লোগো ইমপোর্ট করে নিন
+import { useEffect, useState } from "react";
 import { FiSearch, FiX } from "react-icons/fi";
 import { FaAngleDown, FaBarsStaggered } from "react-icons/fa6";
 import { Link, NavLink } from "react-router-dom";
+import logo from "../../../assets/logo/mainLogo.png";
+import logoWhite from "../../../assets/logo/whiteLogo.png";
 import SearchInput from "./SearchInput";
-import { useState, useEffect } from "react";
 
 const Navbar = () => {
   const [galleryOpen, setGalleryOpen] = useState(false);
@@ -15,13 +14,22 @@ const Navbar = () => {
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 1150) {
-        // subxl breakpoint
         setMobileMenuOpen(false);
       }
     };
+
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
+  const closeMobileMenu = () => setMobileMenuOpen(false);
 
   const baseNavLinkStyle =
     "text-sm font-semibold text-gray-700 hover:text-primary py-2 px-1 relative transition-colors duration-200 tracking-wide";
@@ -29,93 +37,112 @@ const Navbar = () => {
   const getNavLinkClass = ({ isActive }) =>
     `${baseNavLinkStyle} ${isActive ? "text-primary font-bold" : ""}`;
 
-  // মোবাইল ড্রয়ারের জন্য টেক্সটের কালার হোয়াইট করা হয়েছে
   const getMobileNavLinkClass = ({ isActive }) =>
-    `text-base font-medium text-gray-300 hover:text-white py-2 block transition-colors ${isActive ? "text-primary font-bold" : ""}`;
+    `flex items-center rounded-xl px-4 py-3 text-base font-semibold transition-colors ${
+      isActive
+        ? "bg-primary text-white"
+        : "text-gray-200 hover:bg-white/10 hover:text-white"
+    }`;
 
   const navLinks = (isMobile = false) => (
     <div
-      className={`flex ${isMobile ? "flex-col space-y-4 pt-4" : "flex-row items-center gap-6 xl:gap-8"}`}
+      className={`flex ${
+        isMobile ? "flex-col gap-2 pt-4" : "flex-row items-center gap-6 xl:gap-8"
+      }`}
     >
-      {isMobile ? (
-        <>
-          <NavLink
-            to="/"
-            className={getMobileNavLinkClass}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            Home
-          </NavLink>
-          <NavLink
-            to="/mentors"
-            className={getMobileNavLinkClass}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            Mentors
-          </NavLink>
-          <NavLink
-            to="/feedback"
-            className={getMobileNavLinkClass}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            Success Stories
-          </NavLink>
-        </>
-      ) : (
-        <>
-          <NavLink to="/" className={getNavLinkClass}>
-            Home
-          </NavLink>
-          <NavLink to="/mentors" className={getNavLinkClass}>
-            Mentors
-          </NavLink>
-          <NavLink to="/feedback" className={getNavLinkClass}>
-            Success Stories
-          </NavLink>
-        </>
-      )}
+      <NavLink
+        to="/"
+        className={isMobile ? getMobileNavLinkClass : getNavLinkClass}
+        onClick={isMobile ? closeMobileMenu : undefined}
+      >
+        Home
+      </NavLink>
+      <NavLink
+        to="/mentors"
+        className={isMobile ? getMobileNavLinkClass : getNavLinkClass}
+        onClick={isMobile ? closeMobileMenu : undefined}
+      >
+        Mentors
+      </NavLink>
+      <NavLink
+        to="/feedback"
+        className={isMobile ? getMobileNavLinkClass : getNavLinkClass}
+        onClick={isMobile ? closeMobileMenu : undefined}
+      >
+        Success Stories
+      </NavLink>
 
-      {/* Gallery Dropdown */}
       <div
-        className="relative group py-2"
+        className="relative group py-1"
         onMouseEnter={() => !isMobile && setGalleryOpen(true)}
         onMouseLeave={() => !isMobile && setGalleryOpen(false)}
       >
         <button
-          onClick={() => isMobile && setGalleryOpen(!galleryOpen)}
-          className={`flex items-center justify-between w-full subxl:w-auto gap-1.5 font-semibold transition-colors cursor-pointer outline-none ${isMobile ? "text-sm text-gray-300 hover:text-white" : "text-sm text-gray-700 group-hover:text-primary"}`}
+          onClick={() => isMobile && setGalleryOpen((value) => !value)}
+          className={`flex w-full items-center justify-between gap-1.5 rounded-xl font-semibold transition-colors ${
+            isMobile
+              ? "px-4 py-3 text-base text-gray-200 hover:bg-white/10 hover:text-white"
+              : "text-sm text-gray-700 group-hover:text-primary"
+          }`}
+          type="button"
         >
           <span>Gallery</span>
           <FaAngleDown
             size={14}
-            className={`transition-transform duration-300 ${galleryOpen ? "rotate-180 text-primary" : "text-gray-400"}`}
+            className={`transition-transform duration-300 ${
+              galleryOpen ? "rotate-180 text-primary" : "text-gray-400"
+            }`}
           />
         </button>
 
         <div
-          className={`${
+          className={
             isMobile
-              ? `${galleryOpen ? "max-h-40 opacity-100 mt-2" : "max-h-0 opacity-0 pointer-events-none"} overflow-hidden transition-all duration-300`
-              : `absolute left-0 top-full pt-2 w-48 transition-all duration-200 origin-top-left ${galleryOpen ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"}`
-          }`}
+              ? `${
+                  galleryOpen
+                    ? "mt-2 max-h-40 opacity-100"
+                    : "max-h-0 opacity-0 pointer-events-none"
+                } overflow-hidden transition-all duration-300`
+              : `absolute left-0 top-full z-20 w-48 origin-top-left pt-2 transition-all duration-200 ${
+                  galleryOpen
+                    ? "opacity-100 scale-100 pointer-events-auto"
+                    : "opacity-0 scale-95 pointer-events-none"
+                }`
+          }
         >
           <div
-            className={`${isMobile ? "bg-black/40 border-l border-gray-700 pl-4" : "bg-white border border-gray-100 shadow-xl rounded-xl p-2"} flex flex-col gap-1`}
+            className={`flex flex-col gap-1 ${
+              isMobile
+                ? "ml-4 border-l border-gray-700 bg-black/30 pl-3"
+                : "rounded-xl border border-gray-100 bg-white p-2 shadow-xl"
+            }`}
           >
             <NavLink
               to="/photoGallery"
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={isMobile ? closeMobileMenu : undefined}
               className={({ isActive }) =>
-                `px-4 py-2 text-sm rounded-lg hover:bg-white/10 transition-colors block ${isActive ? "text-primary font-semibold" : isMobile ? "text-gray-400" : "text-gray-600"}`
+                `block rounded-lg px-4 py-2 text-sm transition-colors ${
+                  isActive
+                    ? "text-primary font-semibold"
+                    : isMobile
+                      ? "text-gray-300 hover:text-white"
+                      : "text-gray-600 hover:bg-gray-50 hover:text-primary"
+                }`
               }
             >
               Photo Gallery
             </NavLink>
             <NavLink
               to="/videoGallery"
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={isMobile ? closeMobileMenu : undefined}
               className={({ isActive }) =>
-                `px-4 py-2 text-sm rounded-lg hover:bg-white/10 transition-colors block ${isActive ? "text-primary font-semibold" : isMobile ? "text-gray-400" : "text-gray-600"}`
+                `block rounded-lg px-4 py-2 text-sm transition-colors ${
+                  isActive
+                    ? "text-primary font-semibold"
+                    : isMobile
+                      ? "text-gray-300 hover:text-white"
+                      : "text-gray-600 hover:bg-gray-50 hover:text-primary"
+                }`
               }
             >
               Video Gallery
@@ -123,50 +150,81 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-      {/* Get In Touch Dropdown */}
+
       <div
-        className="relative group py-2"
+        className="relative group py-1"
         onMouseEnter={() => !isMobile && setGetInTouchOpen(true)}
         onMouseLeave={() => !isMobile && setGetInTouchOpen(false)}
       >
         <button
-          onClick={() => isMobile && setGetInTouchOpen(!getInTouchOpen)}
-          className={`flex items-center justify-between w-full subxl:w-auto gap-1.5 font-semibold transition-colors cursor-pointer outline-none ${isMobile ? "text-sm text-gray-300 hover:text-white" : "text-sm text-gray-700 group-hover:text-primary"}`}
+          onClick={() => isMobile && setGetInTouchOpen((value) => !value)}
+          className={`flex w-full items-center justify-between gap-1.5 rounded-xl font-semibold transition-colors ${
+            isMobile
+              ? "px-4 py-3 text-base text-gray-200 hover:bg-white/10 hover:text-white"
+              : "text-sm text-gray-700 group-hover:text-primary"
+          }`}
+          type="button"
         >
           <span>Get In Touch</span>
           <FaAngleDown
             size={14}
-            className={`transition-transform duration-300 ${getInTouchOpen ? "rotate-180 text-primary" : "text-gray-400"}`}
+            className={`transition-transform duration-300 ${
+              getInTouchOpen ? "rotate-180 text-primary" : "text-gray-400"
+            }`}
           />
         </button>
 
         <div
-          className={`${
+          className={
             isMobile
-              ? `${getInTouchOpen ? "max-h-40 opacity-100 mt-2" : "max-h-0 opacity-0 pointer-events-none"} overflow-hidden transition-all duration-300`
-              : `absolute left-0 top-full pt-2 w-48 transition-all duration-200 origin-top-left ${getInTouchOpen ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"}`
-          }`}
+              ? `${
+                  getInTouchOpen
+                    ? "mt-2 max-h-40 opacity-100"
+                    : "max-h-0 opacity-0 pointer-events-none"
+                } overflow-hidden transition-all duration-300`
+              : `absolute left-0 top-full z-20 w-48 origin-top-left pt-2 transition-all duration-200 ${
+                  getInTouchOpen
+                    ? "opacity-100 scale-100 pointer-events-auto"
+                    : "opacity-0 scale-95 pointer-events-none"
+                }`
+          }
         >
           <div
-            className={`${isMobile ? "bg-black/40 border-l border-gray-700 pl-4" : "bg-white border border-gray-100 shadow-xl rounded-xl p-2"} flex flex-col gap-1`}
+            className={`flex flex-col gap-1 ${
+              isMobile
+                ? "ml-4 border-l border-gray-700 bg-black/30 pl-3"
+                : "rounded-xl border border-gray-100 bg-white p-2 shadow-xl"
+            }`}
           >
             <NavLink
-              to="/photoGallery"
-              onClick={() => setMobileMenuOpen(false)}
+              to="/contact-us"
+              onClick={isMobile ? closeMobileMenu : undefined}
               className={({ isActive }) =>
-                `px-4 py-2 text-sm rounded-lg hover:bg-white/10 transition-colors block ${isActive ? "text-primary font-semibold" : isMobile ? "text-gray-400" : "text-gray-600"}`
+                `block rounded-lg px-4 py-2 text-sm transition-colors ${
+                  isActive
+                    ? "text-primary font-semibold"
+                    : isMobile
+                      ? "text-gray-300 hover:text-white"
+                      : "text-gray-600 hover:bg-gray-50 hover:text-primary"
+                }`
               }
             >
-              Photo Gallery
+              Contact Us
             </NavLink>
             <NavLink
-              to="/videoGallery"
-              onClick={() => setMobileMenuOpen(false)}
+              to="/representative"
+              onClick={isMobile ? closeMobileMenu : undefined}
               className={({ isActive }) =>
-                `px-4 py-2 text-sm rounded-lg hover:bg-white/10 transition-colors block ${isActive ? "text-primary font-semibold" : isMobile ? "text-gray-400" : "text-gray-600"}`
+                `block rounded-lg px-4 py-2 text-sm transition-colors ${
+                  isActive
+                    ? "text-primary font-semibold"
+                    : isMobile
+                      ? "text-gray-300 hover:text-white"
+                      : "text-gray-600 hover:bg-gray-50 hover:text-primary"
+                }`
               }
             >
-              Video Gallery
+              Representative
             </NavLink>
           </div>
         </div>
@@ -175,13 +233,12 @@ const Navbar = () => {
   );
 
   return (
-    <div className="bg-white/95 backdrop-blur-md w-full border-b border-gray-200/80 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex justify-between items-center">
-        {/* Responsive Brand & Toggle Container */}
-        <div className="flex flex-row justify-between items-center w-full subxl:w-auto">
-          <Link to="/" className="flex items-center shrink-0">
+    <div className="sticky top-0 z-50 w-full border-b border-gray-200/80 bg-white/95 backdrop-blur-md">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div className="flex w-full flex-row items-center justify-between subxl:w-auto">
+          <Link to="/" className="flex shrink-0 items-center">
             <img
-              className="w-28 sm:w-36 h-auto object-contain"
+              className="h-auto w-28 object-contain sm:w-36"
               src={logo}
               alt="Universe IT Logo"
             />
@@ -189,78 +246,80 @@ const Navbar = () => {
 
           <button
             onClick={() => setMobileMenuOpen(true)}
-            className="subxl:hidden text-gray-700 hover:text-primary transition-colors p-1 text-xl outline-none"
-            aria-label="Toggle Navigation Menu"
+            className="p-2 text-xl text-gray-700 transition-colors hover:text-primary subxl:hidden"
+            aria-label="Open Navigation Menu"
+            type="button"
           >
             <FaBarsStaggered />
           </button>
         </div>
 
-        {/* Desktop Search Field */}
-        <div className="hidden subxl:block flex-1 max-w-md mx-8">
+        <div className="mx-8 hidden max-w-md flex-1 subxl:block">
           <SearchInput />
         </div>
 
-        {/* Desktop Navigation Links */}
-        <nav className="hidden subxl:flex items-center">{navLinks(false)}</nav>
+        <nav className="hidden items-center subxl:flex">{navLinks(false)}</nav>
 
-        {/* Desktop Action Button */}
-        <div className="hidden subxl:block ml-6">
+        <div className="ml-6 hidden subxl:block">
           <Link to="/courses">
-            <button className="bg-primary text-white hover:bg-opacity-90 px-5 py-2.5 rounded-xl transition-all duration-200 font-semibold text-sm shadow-sm hover:shadow active:scale-[0.97]">
+            <button className="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-opacity-90 hover:shadow active:scale-[0.97]">
               Browse Courses
             </button>
           </Link>
         </div>
       </div>
 
-      {/* image_e1cb27.png স্টাইলের ব্ল্যাক ড্রপডাউন মেনু ওভারলে */}
-      <div
-        className={`fixed inset-x-0 top-0 z-50 bg-[#0a0a0a] border-b border-gray-800 transition-all duration-300 ease-in-out shadow-2xl subxl:hidden ${mobileMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-full pointer-events-none"}`}
+      <button
+        aria-label="Close Navigation Overlay"
+        onClick={closeMobileMenu}
+        className={`fixed inset-0 z-40 bg-black/50 backdrop-blur-[2px] transition-opacity duration-300 subxl:hidden ${
+          mobileMenuOpen ? "opacity-100" : "pointer-events-none opacity-0"
+        }`}
+        type="button"
+      />
+
+      <aside
+        className={`fixed left-0 top-0 z-50 h-screen w-[86vw] max-w-[360px] border-r border-gray-800 bg-[#0a0a0a] shadow-2xl transition-transform duration-300 ease-out subxl:hidden ${
+          mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
       >
-        <div className="w-full p-4 sm:p-6 flex flex-col">
-          {/* কালো সেকশনের হেডার (ঠিক যেভাবে ছবিতে আছে) */}
-          <div className="flex items-center justify-between pb-4 border-b border-gray-800/80">
+        <div className="flex h-full w-full flex-col overflow-y-auto p-4 sm:p-6">
+          <div className="flex items-center justify-between border-b border-gray-800/80 pb-4">
             <img
-              className="w-32 h-auto object-contain"
+              className="h-auto w-32 object-contain"
               src={logoWhite || logo}
               alt="Universe IT"
             />
             <button
-              onClick={() => setMobileMenuOpen(false)}
-              className="text-gray-400 hover:text-white transition-colors p-2 rounded-full hover:bg-white/5 active:scale-95"
+              onClick={closeMobileMenu}
+              className="rounded-full p-2 text-gray-400 transition-colors hover:bg-white/5 hover:text-white active:scale-95"
+              aria-label="Close Navigation Menu"
+              type="button"
             >
               <FiX size={24} />
             </button>
           </div>
 
-          {/* ড্রয়ারের ভেতর আধুনিক উপায়ে সার্চবার প্লেসমেন্ট */}
-          <div className="mt-4 w-full relative">
+          <div className="relative mt-4 w-full">
             <input
-              className="pl-10 pr-4 py-2.5 bg-zinc-900 border border-zinc-800 w-full rounded-xl text-sm text-white placeholder-gray-500 focus:outline-none focus:border-primary/50 transition-all shadow-inner"
+              className="w-full rounded-xl border border-zinc-800 bg-zinc-900 py-2.5 pl-10 pr-4 text-sm text-white shadow-inner transition-all placeholder:text-gray-500 focus:border-primary/50 focus:outline-none"
               type="text"
               placeholder="What do you want to learn?"
             />
-            <FiSearch className="absolute top-3.5 left-3.5 text-gray-500 text-base" />
+            <FiSearch className="absolute left-3.5 top-3.5 text-base text-gray-500" />
           </div>
 
-          {/* মোবাইল নেভিগেশন লিংকসমূহ */}
           <div className="mt-2">{navLinks(true)}</div>
 
-          {/* নিচের অ্যাকশন বাটন */}
-          <div className="mt-6 pt-4 border-t border-zinc-900 flex justify-between items-center">
-            <Link
-              to="/courses"
-              onClick={() => setMobileMenuOpen(false)}
-              className="w-full"
-            >
-              <button className="w-full text-center bg-primary text-white hover:bg-opacity-95 py-3 px-4 rounded-xl transition-all font-semibold text-sm shadow-md active:scale-[0.98]">
+          <div className="mt-auto border-t border-zinc-900 pt-6">
+            <Link to="/courses" onClick={closeMobileMenu} className="w-full">
+              <button className="w-full rounded-xl bg-primary px-4 py-3 text-center text-sm font-semibold text-white shadow-md transition-all hover:bg-opacity-95 active:scale-[0.98]">
                 Browse Courses
               </button>
             </Link>
           </div>
         </div>
-      </div>
+      </aside>
     </div>
   );
 };

@@ -1,16 +1,25 @@
 /* eslint-disable react/prop-types */
-import { FaRegStar, FaStar, FaPhoneAlt, FaGraduationCap, FaCheckCircle, FaRocket } from "react-icons/fa";
+import {
+  FaCheckCircle,
+  FaClock,
+  FaGraduationCap,
+  FaPhoneAlt,
+  FaRegStar,
+  FaRocket,
+  FaStar,
+  FaUsers,
+} from "react-icons/fa";
 import Rating from "react-rating";
-import ButtonStrong from "../../../Shared/Button/ButtonStrong";
 import { Link } from "react-router-dom";
 import CourseDetailsPageSubVideos from "./CourseDetailsPageSubVideos";
 import MainVideo from "./MainVideo";
-import CourseTabsAndShare from "./CourseTabsAndShare";
 import SuccessStory from "./SuccessStory";
 import RelatedCourse from "./RelatedCourse";
+import CourseTabsAndShare from "./CourseTabsAndShare";
 
 const BannerSection = ({ filteredSuccessStories, courseData }) => {
   const {
+    _id,
     category,
     title,
     videoUrl,
@@ -23,87 +32,84 @@ const BannerSection = ({ filteredSuccessStories, courseData }) => {
   } = courseData;
 
   const handleCallClick = () => {
-    window.location.href = `tel:+8801755450127`;
+    window.location.href = "tel:+8801755450127";
   };
 
+  const admissionLink = `/onlineAdmission?courseId=${encodeURIComponent(_id || "")}`;
+  const activeFee =
+    discountFee && discountFee !== "0" ? discountFee : courseFee;
+
   return (
-    <div className="flex flex-col-reverse lg:flex-row my-4 gap-6 lg:gap-8 items-start max-w-7xl mx-auto px-4 sm:px-6">
-      
-      {/* Left Column: Main Content (Video & Technologies) */}
-      <div className="w-full lg:w-2/3 space-y-6">
-        
-        {/* Desktop Main Video Card */}
-        <div className="hidden lg:block bg-white p-6 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
+    <div className="mx-auto my-6 flex max-w-7xl flex-col-reverse items-start gap-6 px-4 sm:px-6 lg:flex-row lg:gap-8">
+      <div className="w-full space-y-6 lg:w-2/3">
+        <div className="hidden rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-md lg:block">
           {videoUrl && (
-            <div className="rounded-xl overflow-hidden shadow-inner bg-black aspect-video">
+            <div className="aspect-video overflow-hidden rounded-xl bg-black shadow-inner">
               <MainVideo videoUrl={videoUrl} />
             </div>
           )}
 
-          {/* Technologies Section */}
-          <section className="mt-6 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200/60">
-            <h3 className="font-bold text-lg text-gray-800 mb-4 flex items-center gap-2">
-              <span className="w-1.5 h-5 bg-primary rounded-full"></span>
+          <section className="mt-6 rounded-xl border border-gray-200/60 bg-gradient-to-br from-gray-50 to-white p-5">
+            <h3 className="mb-4 flex items-center gap-2 text-lg font-bold text-gray-800">
+              <span className="h-5 w-1.5 rounded-full bg-primary"></span>
               Technologies You Will Learn
             </h3>
-            <div className="grid grid-cols-4 sm:grid-cols-8 gap-1.5">
+            <div className="grid grid-cols-4 gap-2 sm:grid-cols-6 xl:grid-cols-8">
               {technologies?.map((item, idx) => (
                 <div
                   key={idx}
-                  className="flex flex-col items-center justify-center p-3 bg-white rounded-xl shadow-sm border border-gray-100 hover:border-primary/40 hover:-translate-y-1 transition-all duration-300 group"
+                  className="group flex flex-col items-center justify-center rounded-xl border border-gray-100 bg-white p-3 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/40"
                 >
-                  <div className="avatar mb-2">
-                    <div className="w-12 h-12 rounded-xl p-1 bg-gray-50 group-hover:scale-105 transition-transform">
-                      <img src={item?.image} alt={item?.name} className="object-contain w-full h-full" />
-                    </div>
+                  <div className="mb-2 grid h-12 w-12 place-items-center rounded-xl bg-gray-50 p-1 transition-transform group-hover:scale-105">
+                    <img
+                      src={item?.image}
+                      alt={item?.name}
+                      className="h-full w-full object-contain"
+                    />
                   </div>
-                  <p className="font-semibold text-xs text-gray-700 text-center line-clamp-1">{item?.name}</p>
+                  <p className="line-clamp-1 text-center text-xs font-semibold text-gray-700">
+                    {item?.name}
+                  </p>
                 </div>
               ))}
               {technologies?.length < 1 && (
-                <p className="font-medium text-sm text-gray-500 text-center col-span-full py-4">
+                <p className="col-span-full py-4 text-center text-sm font-medium text-gray-500">
                   No technology added yet.
                 </p>
               )}
             </div>
           </section>
 
-          {/* Sub Videos */}
           <div className="mt-6">
             <CourseDetailsPageSubVideos subVideos={subVideos} />
           </div>
-
-          {/* Desktop Tabs */}
-          <div className="mt-6 border-t border-gray-100 pt-6">
-            <CourseTabsAndShare />
-          </div>
+          <CourseTabsAndShare />
         </div>
       </div>
 
-      {/* Right Column: Sticky Sidebar / Premium Course Card */}
-      <div className="w-full lg:w-1/3 bg-white rounded-2xl border border-gray-100 shadow-lg lg:shadow-xl overflow-hidden lg:sticky lg:top-6 transition-all duration-300">
-        
-        {/* Banner Image Area */}
-        <div className="relative group overflow-hidden aspect-video lg:aspect-[4/3]">
-          <img 
-            src={bannerImages[0] || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600"} 
-            alt={title} 
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+      <aside className="w-full overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-lg transition-all duration-300 lg:sticky lg:top-24 lg:w-1/3 lg:shadow-xl">
+        <div className="relative aspect-video overflow-hidden lg:aspect-[4/3]">
+          <img
+            src={
+              bannerImages[0] ||
+              "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=900"
+            }
+            alt={title}
+            className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60"></div>
-          <span className="absolute top-4 left-4 bg-primary text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+          <span className="absolute left-4 top-4 rounded-full bg-primary px-3 py-1 text-xs font-bold uppercase tracking-wider text-white shadow-sm">
             {category || "Course"}
           </span>
         </div>
 
-        {/* Course Core Details */}
         <div className="p-6">
-          <div className="flex justify-between items-start gap-4 mb-4">
+          <div className="mb-4 flex items-start justify-between gap-4">
             <div>
-              <h1 className="font-extrabold text-xl lg:text-2xl text-gray-900 leading-snug tracking-tight mb-1">
+              <h1 className="mb-1 text-xl font-extrabold leading-snug tracking-tight text-gray-900 lg:text-2xl">
                 {title}
               </h1>
-              <div className="flex items-center gap-2 text-amber-500 text-sm mt-1">
+              <div className="mt-1 flex items-center gap-2 text-sm text-amber-500">
                 <Rating
                   className="space-x-0.5"
                   emptySymbol={<FaRegStar />}
@@ -111,65 +117,83 @@ const BannerSection = ({ filteredSuccessStories, courseData }) => {
                   initialRating={5}
                   readonly
                 />
-                <span className="text-gray-500 font-medium text-xs">(4.9/5 Rating)</span>
+                <span className="text-xs font-medium text-gray-500">
+                  (4.9/5 Rating)
+                </span>
               </div>
             </div>
 
-            {/* Pricing Tag Design */}
-            <div className="text-right min-w-[90px] bg-primary/5 p-2.5 rounded-xl border border-primary/10">
-              <span className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider">Course Fee</span>
-              {discountFee === "0" || !discountFee ? (
-                <p className="text-xl font-black text-primary">{courseFee}৳</p>
-              ) : (
-                <div>
-                  <p className="text-xl font-black text-primary">{discountFee}৳</p>
-                  <p className="text-xs text-gray-400 line-through font-medium">{courseFee}৳</p>
-                </div>
+            <div className="min-w-[96px] rounded-xl border border-primary/10 bg-primary/5 p-2.5 text-right">
+              <span className="block text-[10px] font-bold uppercase tracking-wider text-gray-400">
+                Course Fee
+              </span>
+              <p className="text-xl font-black text-primary">TK {activeFee}</p>
+              {discountFee && discountFee !== "0" && (
+                <p className="text-xs font-medium text-gray-400 line-through">
+                  TK {courseFee}
+                </p>
               )}
             </div>
           </div>
 
-          {/* Action Buttons Group */}
-          <div className="space-y-3 mt-6">
+          <div className="grid grid-cols-2 gap-3 rounded-2xl border border-gray-100 bg-gray-50 p-3 text-sm">
+            <div className="flex items-center gap-2 text-gray-700">
+              <span className="grid h-9 w-9 place-items-center rounded-xl bg-white text-primary shadow-sm">
+                <FaClock />
+              </span>
+              <span className="font-semibold">Flexible Batch</span>
+            </div>
+            <div className="flex items-center gap-2 text-gray-700">
+              <span className="grid h-9 w-9 place-items-center rounded-xl bg-white text-primary shadow-sm">
+                <FaUsers />
+              </span>
+              <span className="font-semibold">Expert Support</span>
+            </div>
+          </div>
+
+          <div className="mt-6 space-y-3">
             <div className="grid grid-cols-2 gap-3">
-              <button 
+              <button
                 onClick={handleCallClick}
-                className="w-full flex items-center justify-center gap-2 bg-gray-50 hover:bg-gray-100 text-gray-800 font-bold py-3 px-4 rounded-xl border border-gray-200 transition-all text-sm active:scale-[0.98]"
+                className="flex w-full items-center justify-center gap-2 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm font-bold text-gray-800 transition-all hover:bg-gray-100 active:scale-[0.98]"
+                type="button"
               >
-                <FaPhoneAlt className="text-primary text-xs animate-pulse" />
+                <FaPhoneAlt className="text-xs text-primary" />
                 CALL NOW
               </button>
-              
+
               <Link to="/freeSeminar" className="w-full">
-                <button className="w-full flex items-center justify-center gap-1.5 bg-secondary hover:bg-secondary/90 text-white font-bold py-3 px-2 rounded-xl transition-all text-xs tracking-wide active:scale-[0.98] shadow-sm shadow-secondary/20">
+                <button className="flex w-full items-center justify-center gap-1.5 rounded-xl bg-secondary px-2 py-3 text-xs font-bold tracking-wide text-white shadow-sm shadow-secondary/20 transition-all hover:bg-secondary/90 active:scale-[0.98]">
                   <FaGraduationCap className="text-sm" />
                   FREE SEMINAR
                 </button>
               </Link>
             </div>
 
-            <Link to="/onlineAdmission" className="block w-full pt-1">
-              <button className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-orange-500 hover:opacity-95 text-white font-extrabold py-3.5 px-6 rounded-xl transition-all text-sm tracking-wider shadow-md shadow-primary/20 active:scale-[0.98]">
+            <Link to={admissionLink} className="block w-full pt-1">
+              <button className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-orange-500 px-6 py-3.5 text-sm font-extrabold tracking-wider text-white shadow-md shadow-primary/20 transition-all hover:opacity-95 active:scale-[0.98]">
                 <FaRocket />
                 ENROLL NOW
               </button>
             </Link>
           </div>
 
-          {/* Course Features List */}
-          <div className="mt-6 pt-6 border-t border-gray-100">
-            <p className="text-sm font-bold text-gray-800 mb-3 flex items-center gap-2">
+          <div className="mt-6 border-t border-gray-100 pt-6">
+            <p className="mb-3 flex items-center gap-2 text-sm font-bold text-gray-800">
               This course includes:
             </p>
             <ul className="space-y-2.5">
               {keyFeatures?.map((item, idx) => (
-                <li key={idx} className="flex items-start gap-2.5 text-sm text-gray-600">
-                  <FaCheckCircle className="text-emerald-500 mt-0.5 flex-shrink-0 text-base" />
+                <li
+                  key={idx}
+                  className="flex items-start gap-2.5 text-sm text-gray-600"
+                >
+                  <FaCheckCircle className="mt-0.5 flex-shrink-0 text-base text-emerald-500" />
                   <span className="font-medium leading-tight">{item}</span>
                 </li>
               ))}
               {keyFeatures?.length < 1 && (
-                <li className="text-gray-400 text-xs italic text-center py-2">
+                <li className="py-2 text-center text-xs italic text-gray-400">
                   Key features will be updated soon.
                 </li>
               )}
@@ -177,40 +201,41 @@ const BannerSection = ({ filteredSuccessStories, courseData }) => {
           </div>
         </div>
 
-        {/* Mobile-Only Video & Technologies View */}
-        <div className="lg:hidden border-t border-gray-100 bg-gray-50/50 p-4 space-y-4">
-          {videoUrl && (
-            <div className="rounded-xl overflow-hidden shadow-md bg-black aspect-video">
-              <MainVideo videoUrl={videoUrl} />
-            </div>
-          )}
+        <div className="space-y-4 border-t border-gray-100 bg-gray-50/40 p-4">
+          <div className="lg:hidden">
+            {videoUrl && (
+              <div className="aspect-video overflow-hidden rounded-xl bg-black shadow-md">
+                <MainVideo videoUrl={videoUrl} />
+              </div>
+            )}
 
-          <section className="bg-white rounded-xl p-4 shadow-sm border border-gray-200/60">
-            <p className="font-bold text-sm text-gray-800 mb-3">Technologies you will learn</p>
-            <div className="grid grid-cols-4 gap-3">
-              {technologies?.map((item, idx) => (
-                <div key={idx} className="flex flex-col items-center">
-                  <div className="w-10 h-10 rounded-lg p-1 bg-gray-50 border border-gray-100 flex items-center justify-center">
-                    <img src={item?.image} alt="" className="object-contain max-h-full" />
+            <section className="mt-4 rounded-xl border border-gray-200/60 bg-white p-4 shadow-sm">
+              <p className="mb-3 text-sm font-bold text-gray-800">
+                Technologies you will learn
+              </p>
+              <div className="grid grid-cols-4 gap-3">
+                {technologies?.map((item, idx) => (
+                  <div key={idx} className="flex flex-col items-center">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-gray-100 bg-gray-50 p-1">
+                      <img
+                        src={item?.image}
+                        alt={item?.name}
+                        className="max-h-full object-contain"
+                      />
+                    </div>
+                    <p className="mt-1 w-full truncate text-center text-[10px] font-bold text-gray-600">
+                      {item?.name}
+                    </p>
                   </div>
-                  <p className="font-bold text-[10px] text-gray-600 mt-1 text-center truncate w-full">{item?.name}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <div className="bg-white rounded-xl p-2 shadow-sm">
-            <CourseTabsAndShare />
+                ))}
+              </div>
+            </section>
           </div>
-        </div>
 
-        {/* Success Stories & Related Courses inside Sidebar Flow */}
-        <div className="p-4 bg-gray-50/30 border-t border-gray-100 space-y-4">
           <SuccessStory filteredSuccessStories={filteredSuccessStories} />
           <RelatedCourse />
         </div>
-
-      </div>
+      </aside>
     </div>
   );
 };

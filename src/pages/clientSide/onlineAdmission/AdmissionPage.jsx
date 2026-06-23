@@ -10,11 +10,12 @@ import logo from '../../../assets/logo/mainLogo.png'
 import ButtonStrong from '../../../Shared/Button/ButtonStrong';
 import Loading from '../../../Shared/Loading/Loading';
 import Swal from 'sweetalert2';
-import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 const AdmissionPage = () => {
     const axiosPublic = useAxiosPublic();
-    const {show, setShow} = useState(false);
+    const [searchParams] = useSearchParams();
+    const selectedCourseId = searchParams.get('courseId') || '';
     const { data: courses = [], refetch: coursesRefetch, isLoading } = useQuery({
         queryKey: ['courses'],
         queryFn: async () => {
@@ -177,11 +178,11 @@ const AdmissionPage = () => {
                                                                 {/* course  */}
                                                                 <div className='p-2 w-full'>
                                                                     <label className="text-[12px] lg:text-sm">Select course</label>
-                                                                    <select required name='course' className="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] lg:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 px-2">
+                                                                    <select required name='course' defaultValue={selectedCourseId} className="bg-gray-50 border border-gray-300 text-gray-900 text-[12px] lg:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 px-2">
 
-                                                                        <option value="" defaultChecked>Select Course</option>
+                                                                        <option value="">Select Course</option>
                                                                         {
-                                                                            courses?.map(course => <option key={course?._id} value={course?._id} defaultChecked>{course.title}</option>)
+                                                                            courses?.map(course => <option key={course?._id} value={course?._id}>{course.title}</option>)
                                                                         }
 
 
