@@ -1,5 +1,11 @@
 /* eslint-disable react/prop-types */
-import { Code, Database, Layers, ShieldCheck, Sparkles } from "lucide-react";
+import {
+  Code,
+  Layers,
+  MessageCircleCode,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import bannerFallback from "../../../assets/banner/banner.png";
@@ -21,14 +27,29 @@ const Banner = ({ data = {} }) => {
   const subtitleText =
     data?.subtitle ||
     "Learn in-demand technology skills from expert mentors and start working on real projects with confidence.";
-  const imageUrl = "https://images.pexels.com/photos/36706459/pexels-photo-36706459.jpeg" || data?.imageUrl || bannerFallback;
+  const imageUrl =
+    "https://images.pexels.com/photos/36706459/pexels-photo-36706459.jpeg" ||
+    data?.imageUrl ||
+    bannerFallback;
   const [firstTitle, highlightedTitle] = splitTitle(titleText);
 
   const techBadges = [
-    { icon: <Code size={16} />, label: "Web", className: "left-3 top-6" },
+    {
+      icon: <Code size={16} />,
+      label: "MERN Stack",
+      className: "left-3 top-6",
+    },
     { icon: <Layers size={16} />, label: "UI/UX", className: "right-3 top-16" },
-    { icon: <Database size={16} />, label: "Backend", className: "left-6 bottom-20" },
-    { icon: <ShieldCheck size={16} />, label: "Career", className: "right-8 bottom-8" },
+    {
+      icon: <MessageCircleCode size={16} />,
+      label: "Python",
+      className: "left-6 bottom-20",
+    },
+    {
+      icon: <ShieldCheck size={16} />,
+      label: "Career",
+      className: "right-8 bottom-8",
+    },
   ];
 
   return (
@@ -40,11 +61,13 @@ const Banner = ({ data = {} }) => {
           transition={{ duration: 0.7, ease: "easeOut" }}
           className="order-2 space-y-6 lg:order-1"
         >
-         
-            <p className="inline-flex max-w-full items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-sm font-semibold text-secondary shadow-sm">
-              <Sparkles size={16} className="shrink-0 text-primary" />  <span className="whitespace-nowrap"> Free Seminar on 25th August! </span>
-            </p>
-         
+          <p className="inline-flex max-w-full items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-sm font-semibold text-secondary shadow-sm">
+            <Sparkles size={16} className="shrink-0 text-primary" />{" "}
+            <span className="whitespace-nowrap">
+              {" "}
+              Free Seminar on 25th August!{" "}
+            </span>
+          </p>
 
           <div className="space-y-4">
             <h1 className="text-3xl font-bold leading-tight text-secondary sm:text-5xl lg:text-6xl">

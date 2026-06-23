@@ -5,15 +5,16 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState, useMemo } from "react";
 import { FaSearch } from "react-icons/fa";
 
+const emptyCourses = [];
+
 const SearchInput = () => {
     const axiosPublic = useAxiosPublic();
     const dropdownRef = useRef(null);
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState("");
-    const [filteredSearch, setFilteredSearch] = useState([]);
     const [showResult, setShowResult] = useState(false);
 
-    const { data: courses = [], isLoading } = useQuery({
+    const { data: courses = emptyCourses, isLoading } = useQuery({
         queryKey: ['courses'],
         queryFn: async () => {
             const res = await axiosPublic.get('/course');
@@ -42,6 +43,18 @@ const SearchInput = () => {
         ];
     }, [courses, navigate]);
 
+    const filteredSearch = useMemo(() => {
+        const normalizedSearchTerm = searchTerm.trim().toLowerCase();
+
+        if (!normalizedSearchTerm) {
+            return [];
+        }
+
+        return searchingData.filter((item) =>
+            item.name.toLowerCase().includes(normalizedSearchTerm)
+        );
+    }, [searchTerm, searchingData]);
+
     // Handle outside click to close dropdown
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -52,18 +65,6 @@ const SearchInput = () => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
-
-    // Filter dynamic input
-    useEffect(() => {
-        if (!searchTerm.trim()) {
-            setFilteredSearch([]);
-            return;
-        }
-        const filtered = searchingData.filter((item) =>
-            item.name.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        setFilteredSearch(filtered);
-    }, [searchTerm, searchingData]);
 
     const handleChangeRoutes = (data) => {
         data.navigate();

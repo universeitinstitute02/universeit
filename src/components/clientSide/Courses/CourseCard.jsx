@@ -54,7 +54,7 @@ const CourseCard = ({ course = {}, isCoursePage = false }) => {
               </p>
             )}
           </div>
-          <button className="btn bg-orange-600 text-white w-full mt-4">See More</button>
+          <button className="btn bg-orange-600 hover:bg-secondary text-white w-full mt-4">See More</button>
         </div>
       </div>
     </Link>

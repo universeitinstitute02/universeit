@@ -6,6 +6,25 @@ import logo from "../../../assets/logo/mainLogo.png";
 import logoWhite from "../../../assets/logo/whiteLogo.png";
 import SearchInput from "./SearchInput";
 
+const mainNavItems = [
+  { label: "Home", to: "/" },
+  { label: "Mentors", to: "/mentors" },
+  { label: "Success Stories", to: "/feedback" },
+];
+
+const galleryItems = [
+  { label: "Photo Gallery", to: "/photoGallery" },
+  { label: "Video Gallery", to: "/videoGallery" },
+];
+
+const getInTouchItems = [
+  { label: "About Us", to: "/aboutUs" },
+  { label: "Blogs", to: "/blogs" },
+  { label: "Career", to: "/career" },
+  { label: "Representative", to: "/representative" },
+  { label: "Contact Us", to: "/contact-us" },
+];
+
 const Navbar = () => {
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [getInTouchOpen, setGetInTouchOpen] = useState(false);
@@ -44,191 +63,111 @@ const Navbar = () => {
         : "text-gray-200 hover:bg-white/10 hover:text-white"
     }`;
 
+  const getDropdownLinkClass = (isMobile, isActive) =>
+    `block rounded-lg px-4 py-2 text-sm transition-colors ${
+      isActive
+        ? "text-primary font-semibold"
+        : isMobile
+          ? "text-gray-300 hover:text-white"
+          : "text-gray-600 hover:bg-gray-50 hover:text-primary"
+    }`;
+
+  const renderNavItem = ({ label, to }, isMobile) => (
+    <NavLink
+      key={to}
+      to={to}
+      className={isMobile ? getMobileNavLinkClass : getNavLinkClass}
+      onClick={isMobile ? closeMobileMenu : undefined}
+    >
+      {label}
+    </NavLink>
+  );
+
+  const renderDropdown = ({ label, items, isOpen, setIsOpen }, isMobile) => (
+    <div
+      key={label}
+      className="relative group py-1"
+      onMouseEnter={() => !isMobile && setIsOpen(true)}
+      onMouseLeave={() => !isMobile && setIsOpen(false)}
+    >
+      <button
+        onClick={() => isMobile && setIsOpen((value) => !value)}
+        className={`flex w-full items-center justify-between gap-1.5 rounded-xl font-semibold transition-colors ${
+          isMobile
+            ? "px-4 py-3 text-base text-gray-200 hover:bg-white/10 hover:text-white"
+            : "text-sm text-gray-700 group-hover:text-primary"
+        }`}
+        type="button"
+      >
+        <span>{label}</span>
+        <FaAngleDown
+          size={14}
+          className={`transition-transform duration-300 ${
+            isOpen ? "rotate-180 text-primary" : "text-gray-400"
+          }`}
+        />
+      </button>
+
+      <div
+        className={
+          isMobile
+            ? `${
+                isOpen
+                  ? "mt-2 max-h-40 opacity-100"
+                  : "max-h-0 opacity-0 pointer-events-none"
+              } overflow-hidden transition-all duration-300`
+            : `absolute left-0 top-full z-20 w-48 origin-top-left pt-2 transition-all duration-200 ${
+                isOpen
+                  ? "opacity-100 scale-100 pointer-events-auto"
+                  : "opacity-0 scale-95 pointer-events-none"
+              }`
+        }
+      >
+        <div
+          className={`flex flex-col gap-1 ${
+            isMobile
+              ? "ml-4 border-l border-gray-700 bg-black/30 pl-3"
+              : "rounded-xl border border-gray-100 bg-white p-2 shadow-xl"
+          }`}
+        >
+          {items.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              onClick={isMobile ? closeMobileMenu : undefined}
+              className={({ isActive }) =>
+                getDropdownLinkClass(isMobile, isActive)
+              }
+            >
+              {item.label}
+            </NavLink>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
   const navLinks = (isMobile = false) => (
     <div
       className={`flex ${
         isMobile ? "flex-col gap-2 pt-4" : "flex-row items-center gap-6 xl:gap-8"
       }`}
     >
-      <NavLink
-        to="/"
-        className={isMobile ? getMobileNavLinkClass : getNavLinkClass}
-        onClick={isMobile ? closeMobileMenu : undefined}
-      >
-        Home
-      </NavLink>
-      <NavLink
-        to="/mentors"
-        className={isMobile ? getMobileNavLinkClass : getNavLinkClass}
-        onClick={isMobile ? closeMobileMenu : undefined}
-      >
-        Mentors
-      </NavLink>
-      <NavLink
-        to="/feedback"
-        className={isMobile ? getMobileNavLinkClass : getNavLinkClass}
-        onClick={isMobile ? closeMobileMenu : undefined}
-      >
-        Success Stories
-      </NavLink>
-
-      <div
-        className="relative group py-1"
-        onMouseEnter={() => !isMobile && setGalleryOpen(true)}
-        onMouseLeave={() => !isMobile && setGalleryOpen(false)}
-      >
-        <button
-          onClick={() => isMobile && setGalleryOpen((value) => !value)}
-          className={`flex w-full items-center justify-between gap-1.5 rounded-xl font-semibold transition-colors ${
-            isMobile
-              ? "px-4 py-3 text-base text-gray-200 hover:bg-white/10 hover:text-white"
-              : "text-sm text-gray-700 group-hover:text-primary"
-          }`}
-          type="button"
-        >
-          <span>Gallery</span>
-          <FaAngleDown
-            size={14}
-            className={`transition-transform duration-300 ${
-              galleryOpen ? "rotate-180 text-primary" : "text-gray-400"
-            }`}
-          />
-        </button>
-
-        <div
-          className={
-            isMobile
-              ? `${
-                  galleryOpen
-                    ? "mt-2 max-h-40 opacity-100"
-                    : "max-h-0 opacity-0 pointer-events-none"
-                } overflow-hidden transition-all duration-300`
-              : `absolute left-0 top-full z-20 w-48 origin-top-left pt-2 transition-all duration-200 ${
-                  galleryOpen
-                    ? "opacity-100 scale-100 pointer-events-auto"
-                    : "opacity-0 scale-95 pointer-events-none"
-                }`
-          }
-        >
-          <div
-            className={`flex flex-col gap-1 ${
-              isMobile
-                ? "ml-4 border-l border-gray-700 bg-black/30 pl-3"
-                : "rounded-xl border border-gray-100 bg-white p-2 shadow-xl"
-            }`}
-          >
-            <NavLink
-              to="/photoGallery"
-              onClick={isMobile ? closeMobileMenu : undefined}
-              className={({ isActive }) =>
-                `block rounded-lg px-4 py-2 text-sm transition-colors ${
-                  isActive
-                    ? "text-primary font-semibold"
-                    : isMobile
-                      ? "text-gray-300 hover:text-white"
-                      : "text-gray-600 hover:bg-gray-50 hover:text-primary"
-                }`
-              }
-            >
-              Photo Gallery
-            </NavLink>
-            <NavLink
-              to="/videoGallery"
-              onClick={isMobile ? closeMobileMenu : undefined}
-              className={({ isActive }) =>
-                `block rounded-lg px-4 py-2 text-sm transition-colors ${
-                  isActive
-                    ? "text-primary font-semibold"
-                    : isMobile
-                      ? "text-gray-300 hover:text-white"
-                      : "text-gray-600 hover:bg-gray-50 hover:text-primary"
-                }`
-              }
-            >
-              Video Gallery
-            </NavLink>
-          </div>
-        </div>
-      </div>
-
-      <div
-        className="relative group py-1"
-        onMouseEnter={() => !isMobile && setGetInTouchOpen(true)}
-        onMouseLeave={() => !isMobile && setGetInTouchOpen(false)}
-      >
-        <button
-          onClick={() => isMobile && setGetInTouchOpen((value) => !value)}
-          className={`flex w-full items-center justify-between gap-1.5 rounded-xl font-semibold transition-colors ${
-            isMobile
-              ? "px-4 py-3 text-base text-gray-200 hover:bg-white/10 hover:text-white"
-              : "text-sm text-gray-700 group-hover:text-primary"
-          }`}
-          type="button"
-        >
-          <span>Get In Touch</span>
-          <FaAngleDown
-            size={14}
-            className={`transition-transform duration-300 ${
-              getInTouchOpen ? "rotate-180 text-primary" : "text-gray-400"
-            }`}
-          />
-        </button>
-
-        <div
-          className={
-            isMobile
-              ? `${
-                  getInTouchOpen
-                    ? "mt-2 max-h-40 opacity-100"
-                    : "max-h-0 opacity-0 pointer-events-none"
-                } overflow-hidden transition-all duration-300`
-              : `absolute left-0 top-full z-20 w-48 origin-top-left pt-2 transition-all duration-200 ${
-                  getInTouchOpen
-                    ? "opacity-100 scale-100 pointer-events-auto"
-                    : "opacity-0 scale-95 pointer-events-none"
-                }`
-          }
-        >
-          <div
-            className={`flex flex-col gap-1 ${
-              isMobile
-                ? "ml-4 border-l border-gray-700 bg-black/30 pl-3"
-                : "rounded-xl border border-gray-100 bg-white p-2 shadow-xl"
-            }`}
-          >
-            <NavLink
-              to="/contact-us"
-              onClick={isMobile ? closeMobileMenu : undefined}
-              className={({ isActive }) =>
-                `block rounded-lg px-4 py-2 text-sm transition-colors ${
-                  isActive
-                    ? "text-primary font-semibold"
-                    : isMobile
-                      ? "text-gray-300 hover:text-white"
-                      : "text-gray-600 hover:bg-gray-50 hover:text-primary"
-                }`
-              }
-            >
-              Contact Us
-            </NavLink>
-            <NavLink
-              to="/representative"
-              onClick={isMobile ? closeMobileMenu : undefined}
-              className={({ isActive }) =>
-                `block rounded-lg px-4 py-2 text-sm transition-colors ${
-                  isActive
-                    ? "text-primary font-semibold"
-                    : isMobile
-                      ? "text-gray-300 hover:text-white"
-                      : "text-gray-600 hover:bg-gray-50 hover:text-primary"
-                }`
-              }
-            >
-              Representative
-            </NavLink>
-          </div>
-        </div>
-      </div>
+      {mainNavItems.map((item) => renderNavItem(item, isMobile))}
+      {[
+        {
+          label: "Gallery",
+          items: galleryItems,
+          isOpen: galleryOpen,
+          setIsOpen: setGalleryOpen,
+        },
+        {
+          label: "Get In Touch",
+          items: getInTouchItems,
+          isOpen: getInTouchOpen,
+          setIsOpen: setGetInTouchOpen,
+        },
+      ].map((item) => renderDropdown(item, isMobile))}
     </div>
   );
 
@@ -279,7 +218,7 @@ const Navbar = () => {
       />
 
       <aside
-        className={`fixed left-0 top-0 z-50 h-screen w-[86vw] max-w-[360px] border-r border-gray-800 bg-[#0a0a0a] shadow-2xl transition-transform duration-300 ease-out subxl:hidden ${
+        className={`fixed left-0 top-0 z-50 h-screen w-[86vw] max-w-[360px] border-r border-gray-800 bg-white shadow-2xl transition-transform duration-300 ease-out subxl:hidden ${
           mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -287,12 +226,12 @@ const Navbar = () => {
           <div className="flex items-center justify-between border-b border-gray-800/80 pb-4">
             <img
               className="h-auto w-32 object-contain"
-              src={logoWhite || logo}
+              src={logo}
               alt="Universe IT"
             />
             <button
               onClick={closeMobileMenu}
-              className="rounded-full p-2 text-gray-400 transition-colors hover:bg-white/5 hover:text-white active:scale-95"
+              className="rounded-full p-2 text-secondary transition-colors hover:bg-white/5 hover:text-white active:scale-95"
               aria-label="Close Navigation Menu"
               type="button"
             >
