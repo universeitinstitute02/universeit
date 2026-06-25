@@ -59,8 +59,8 @@ const Navbar = () => {
   const getMobileNavLinkClass = ({ isActive }) =>
     `flex items-center rounded-xl px-4 py-3 text-base font-semibold transition-colors ${
       isActive
-        ? "bg-primary text-white"
-        : "text-gray-200 hover:bg-white/10 hover:text-white"
+        ? "bg-primary text-white shadow-sm"
+        : "text-slate-700 hover:bg-primary/10 hover:text-primary"
     }`;
 
   const getDropdownLinkClass = (isMobile, isActive) =>
@@ -68,7 +68,7 @@ const Navbar = () => {
       isActive
         ? "text-primary font-semibold"
         : isMobile
-          ? "text-gray-300 hover:text-white"
+          ? "text-slate-600 hover:text-primary"
           : "text-gray-600 hover:bg-gray-50 hover:text-primary"
     }`;
 
@@ -94,7 +94,7 @@ const Navbar = () => {
         onClick={() => isMobile && setIsOpen((value) => !value)}
         className={`flex w-full items-center justify-between gap-1.5 rounded-xl font-semibold transition-colors ${
           isMobile
-            ? "px-4 py-3 text-base text-gray-200 hover:bg-white/10 hover:text-white"
+            ? "px-4 py-3 text-base text-slate-700 hover:bg-primary/10 hover:text-primary"
             : "text-sm text-gray-700 group-hover:text-primary"
         }`}
         type="button"
@@ -126,7 +126,7 @@ const Navbar = () => {
         <div
           className={`flex flex-col gap-1 ${
             isMobile
-              ? "ml-4 border-l border-gray-700 bg-black/30 pl-3"
+              ? "ml-4 border-l border-slate-200 bg-slate-50 pl-3"
               : "rounded-xl border border-gray-100 bg-white p-2 shadow-xl"
           }`}
         >
@@ -150,7 +150,9 @@ const Navbar = () => {
   const navLinks = (isMobile = false) => (
     <div
       className={`flex ${
-        isMobile ? "flex-col gap-2 pt-4" : "flex-row items-center gap-6 xl:gap-8"
+        isMobile
+          ? "flex-col gap-2 pt-4"
+          : "flex-row items-center gap-6 xl:gap-8"
       }`}
     >
       {mainNavItems.map((item) => renderNavItem(item, isMobile))}
@@ -218,12 +220,12 @@ const Navbar = () => {
       />
 
       <aside
-        className={`fixed left-0 top-0 z-50 h-screen w-[86vw] max-w-[360px] border-r border-gray-800 bg-white shadow-2xl transition-transform duration-300 ease-out subxl:hidden ${
+        className={`fixed left-0 top-0 z-50 h-screen w-[86vw] max-w-[360px] border-r border-slate-200 bg-white shadow-2xl transition-transform duration-300 ease-out subxl:hidden ${
           mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div className="flex h-full w-full flex-col overflow-y-auto p-4 sm:p-6">
-          <div className="flex items-center justify-between border-b border-gray-800/80 pb-4">
+          <div className="flex items-center justify-between border-b border-slate-200 pb-4">
             <img
               className="h-auto w-32 object-contain"
               src={logo}
@@ -231,7 +233,7 @@ const Navbar = () => {
             />
             <button
               onClick={closeMobileMenu}
-              className="rounded-full p-2 text-secondary transition-colors hover:bg-white/5 hover:text-white active:scale-95"
+              className="rounded-full p-2 text-slate-700 transition-colors hover:bg-slate-200 hover:text-primary active:scale-95"
               aria-label="Close Navigation Menu"
               type="button"
             >
@@ -241,18 +243,18 @@ const Navbar = () => {
 
           <div className="relative mt-4 w-full">
             <input
-              className="w-full rounded-xl border border-zinc-800 bg-zinc-900 py-2.5 pl-10 pr-4 text-sm text-white shadow-inner transition-all placeholder:text-gray-500 focus:border-primary/50 focus:outline-none"
+              className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-sm text-slate-700 shadow-inner transition-all placeholder:text-slate-400 focus:border-primary/50 focus:outline-none"
               type="text"
               placeholder="What do you want to learn?"
             />
-            <FiSearch className="absolute left-3.5 top-3.5 text-base text-gray-500" />
+            <FiSearch className="absolute left-3.5 top-3.5 text-base text-slate-400" />
           </div>
 
           <div className="mt-2">{navLinks(true)}</div>
 
-          <div className="mt-auto border-t border-zinc-900 pt-6">
+          <div className="mt-auto border-t border-slate-200 pt-6">
             <Link to="/courses" onClick={closeMobileMenu} className="w-full">
-              <button className="w-full rounded-xl bg-primary px-4 py-3 text-center text-sm font-semibold text-white shadow-md transition-all hover:bg-opacity-95 active:scale-[0.98]">
+              <button className="w-full rounded-xl bg-primary px-4 py-3.5 text-center text-sm font-semibold text-white shadow-lg shadow-primary/20 transition-all hover:bg-orange-500 active:scale-[0.98]">
                 Browse Courses
               </button>
             </Link>

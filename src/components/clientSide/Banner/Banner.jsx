@@ -28,7 +28,7 @@ const Banner = ({ data = {} }) => {
     data?.subtitle ||
     "Learn in-demand technology skills from expert mentors and start working on real projects with confidence.";
   const imageUrl =
-    "https://images.pexels.com/photos/36706459/pexels-photo-36706459.jpeg" ||
+    "https://res.cloudinary.com/dnvmj9pvk/image/upload/v1782284296/uiti-hero_ur5nmu.webp" ||
     data?.imageUrl ||
     bannerFallback;
   const [firstTitle, highlightedTitle] = splitTitle(titleText);
