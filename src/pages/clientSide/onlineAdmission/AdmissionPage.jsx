@@ -128,9 +128,14 @@ const AdmissionPage = () => {
     try {
       setIsSubmitting(true);
       const res = await axiosPublic.post("/admission", admissionData);
-      console.log("admissionData", admissionData);
 
       if (res.data.insertedId) {
+        Swal.fire({
+          icon: "success",
+          title: "Admission Submitted Successfully!",
+          confirmButtonColor: "var(--primary, #002147)",
+        });
+
         setSubmittedAdmission({
           ...admissionData,
           admissionId: res.data.insertedId,
@@ -170,9 +175,9 @@ const AdmissionPage = () => {
         <title>Universe IT | Online Admission</title>
       </Helmet>
 
-      <section className="bg-slate-50 py-8 sm:py-12">
+      <main className="bg-slate-50 py-8 sm:py-12">
         <div className="mx-auto w-11/12 max-w-6xl">
-          <div className="mb-6 flex flex-col gap-4 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+          <header className="mb-6 flex flex-col gap-4 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-sm font-bold uppercase tracking-wide text-primary">
                 Online Admission
@@ -182,7 +187,10 @@ const AdmissionPage = () => {
               </h1>
             </div>
 
-            <div className="flex items-center gap-2 rounded-xl bg-gray-50 p-1 text-xs font-bold text-gray-500">
+            <nav
+              aria-label="Admission steps"
+              className="flex items-center gap-2 rounded-xl bg-gray-50 p-1 text-xs font-bold text-gray-500"
+            >
               <span
                 className={`rounded-lg px-3 py-2 ${
                   step === 1 ? "bg-primary text-white" : ""
@@ -204,20 +212,20 @@ const AdmissionPage = () => {
               >
                 Done
               </span>
-            </div>
-          </div>
+            </nav>
+          </header>
 
           {step === 3 && submittedAdmission ? (
-            <div className="rounded-2xl border border-emerald-100 bg-white p-6 text-center shadow-sm sm:p-10">
-              <div className="mx-auto grid h-16 w-16 place-items-center text-green-600 rounded-full bg-emerald-50 text-4xl text-emerald-600">
-                <FaCheckCircle />
+            <article className="rounded-2xl border border-emerald-100 bg-white p-6 text-center shadow-sm sm:p-10">
+              <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-emerald-50 text-4xl text-emerald-600">
+                <FaCheckCircle aria-hidden="true" />
               </div>
-              <p className="text-sm font-bold uppercase tracking-wide text-green-600 text-emerald-600">
+              <p className="text-sm font-bold uppercase tracking-wide text-emerald-600">
                 Congratulations
               </p>
               <h2 className="mt-2 text-2xl font-black text-gray-900 sm:text-4xl">
-                <span className="text-green-600">
-                  {submittedAdmission.name}, 
+                <span className="text-emerald-600">
+                  {submittedAdmission.name},{" "}
                 </span>
                 Your enrollment request is received.
               </h2>
@@ -272,17 +280,20 @@ const AdmissionPage = () => {
                   Browse courses
                 </Link>
               </div>
-            </div>
+            </article>
           ) : (
             <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
               <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm sm:p-6">
                 {step === 1 ? (
                   <form onSubmit={handleDetailsNext} className="space-y-5">
                     <div>
-                      <p className="flex items-center gap-2 text-lg font-black text-gray-900">
-                        <FaUserGraduate className="text-primary" />
+                      <h2 className="flex items-center gap-2 text-lg font-black text-gray-900">
+                        <FaUserGraduate
+                          className="text-primary"
+                          aria-hidden="true"
+                        />
                         Student and course details
-                      </p>
+                      </h2>
                       <p className="mt-1 text-sm font-medium text-gray-500">
                         Fill in the student information first. Payment details
                         will come in the next step.
@@ -290,9 +301,15 @@ const AdmissionPage = () => {
                     </div>
 
                     <div className="grid gap-4 sm:grid-cols-2">
-                      <label className="space-y-2 text-sm font-bold text-gray-700">
-                        Name
+                      <div className="flex flex-col gap-2">
+                        <label
+                          htmlFor="student_name"
+                          className="text-sm font-bold text-gray-700"
+                        >
+                          Name
+                        </label>
                         <input
+                          id="student_name"
                           required
                           type="text"
                           name="name"
@@ -301,11 +318,17 @@ const AdmissionPage = () => {
                           placeholder="Enter full name"
                           className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 font-medium outline-none transition focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/10"
                         />
-                      </label>
+                      </div>
 
-                      <label className="space-y-2 text-sm font-bold text-gray-700">
-                        Phone Number
+                      <div className="flex flex-col gap-2">
+                        <label
+                          htmlFor="student_phone"
+                          className="text-sm font-bold text-gray-700"
+                        >
+                          Phone Number
+                        </label>
                         <input
+                          id="student_phone"
                           required
                           type="tel"
                           name="phone"
@@ -314,11 +337,17 @@ const AdmissionPage = () => {
                           placeholder="Enter phone number"
                           className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 font-medium outline-none transition focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/10"
                         />
-                      </label>
+                      </div>
 
-                      <label className="space-y-2 text-sm font-bold text-gray-700">
-                        Select Course
+                      <div className="flex flex-col gap-2">
+                        <label
+                          htmlFor="student_course"
+                          className="text-sm font-bold text-gray-700"
+                        >
+                          Select Course
+                        </label>
                         <select
+                          id="student_course"
                           required
                           name="course"
                           value={formData.course}
@@ -332,11 +361,17 @@ const AdmissionPage = () => {
                             </option>
                           ))}
                         </select>
-                      </label>
+                      </div>
 
-                      <label className="space-y-2 text-sm font-bold text-gray-700">
-                        Select Gender
+                      <div className="flex flex-col gap-2">
+                        <label
+                          htmlFor="student_gender"
+                          className="text-sm font-bold text-gray-700"
+                        >
+                          Select Gender
+                        </label>
                         <select
+                          id="student_gender"
                           required
                           name="gender"
                           value={formData.gender}
@@ -347,11 +382,17 @@ const AdmissionPage = () => {
                           <option value="male">Male</option>
                           <option value="female">Female</option>
                         </select>
-                      </label>
+                      </div>
 
-                      <label className="space-y-2 text-sm font-bold text-gray-700 sm:col-span-2">
-                        Present Address
+                      <div className="flex flex-col gap-2 sm:col-span-2">
+                        <label
+                          htmlFor="student_address"
+                          className="text-sm font-bold text-gray-700"
+                        >
+                          Present Address
+                        </label>
                         <textarea
+                          id="student_address"
                           required
                           name="address"
                           value={formData.address}
@@ -360,7 +401,7 @@ const AdmissionPage = () => {
                           placeholder="Enter present address"
                           className="w-full resize-none rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 font-medium outline-none transition focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/10"
                         />
-                      </label>
+                      </div>
                     </div>
 
                     <div className="flex justify-end">
@@ -369,24 +410,28 @@ const AdmissionPage = () => {
                         className="flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-extrabold text-white shadow-md shadow-primary/20 transition hover:bg-primary/90 active:scale-[0.98]"
                       >
                         Next
-                        <FaRocket />
+                        <FaRocket aria-hidden="true" />
                       </button>
                     </div>
                   </form>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-5">
                     <div>
-                      <p className="flex items-center gap-2 text-lg font-black text-gray-900">
-                        <FaRegAddressCard className="text-primary" />
+                      <h2 className="flex items-center gap-2 text-lg font-black text-gray-900">
+                        <FaRegAddressCard
+                          className="text-primary"
+                          aria-hidden="true"
+                        />
                         Payment method and details
-                      </p>
+                      </h2>
                       <p className="mt-1 text-sm font-medium text-gray-500">
                         Select your payment method, then submit your payment
                         number and transaction ID.
                       </p>
                     </div>
 
-                    <div className="grid gap-3 sm:grid-cols-3">
+                    <fieldset className="grid gap-3 sm:grid-cols-3">
+                      <legend className="sr-only">Choose Payment Method</legend>
                       {paymentMethods.map((method) => {
                         const Icon = method.icon;
                         const isActive = formData.payment_method === method.id;
@@ -409,7 +454,7 @@ const AdmissionPage = () => {
                               className="sr-only"
                             />
                             <span className="flex items-center gap-2 font-black">
-                              <Icon />
+                              <Icon aria-hidden="true" />
                               {method.name}
                             </span>
                             <span className="mt-2 block text-xs font-bold">
@@ -418,7 +463,7 @@ const AdmissionPage = () => {
                           </label>
                         );
                       })}
-                    </div>
+                    </fieldset>
 
                     <div className="rounded-xl border border-primary/10 bg-primary/5 p-4 text-sm font-semibold text-gray-700">
                       Send the course payment to{" "}
@@ -430,9 +475,15 @@ const AdmissionPage = () => {
                     </div>
 
                     <div className="grid gap-4 sm:grid-cols-2">
-                      <label className="space-y-2 text-sm font-bold text-gray-700">
-                        Payment Number
+                      <div className="flex flex-col gap-2">
+                        <label
+                          htmlFor="payment_number"
+                          className="text-sm font-bold text-gray-700"
+                        >
+                          Payment Number
+                        </label>
                         <input
+                          id="payment_number"
                           required
                           type="tel"
                           name="payment_number"
@@ -441,11 +492,17 @@ const AdmissionPage = () => {
                           placeholder="Sender payment number"
                           className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 font-medium outline-none transition focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/10"
                         />
-                      </label>
+                      </div>
 
-                      <label className="space-y-2 text-sm font-bold text-gray-700">
-                        Transaction ID
+                      <div className="flex flex-col gap-2">
+                        <label
+                          htmlFor="transaction_id"
+                          className="text-sm font-bold text-gray-700"
+                        >
+                          Transaction ID
+                        </label>
                         <input
+                          id="transaction_id"
                           required
                           type="text"
                           name="transaction_id"
@@ -454,7 +511,7 @@ const AdmissionPage = () => {
                           placeholder="Enter transaction ID"
                           className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 font-medium outline-none transition focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/10"
                         />
-                      </label>
+                      </div>
                     </div>
 
                     <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -463,7 +520,7 @@ const AdmissionPage = () => {
                         onClick={() => setStep(1)}
                         className="flex items-center justify-center gap-2 rounded-xl border border-gray-200 px-5 py-3 text-sm font-extrabold text-gray-700 transition hover:bg-gray-50"
                       >
-                        <FaArrowLeft />
+                        <FaArrowLeft aria-hidden="true" />
                         Back
                       </button>
                       <button
@@ -472,7 +529,7 @@ const AdmissionPage = () => {
                         className="flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-extrabold text-white shadow-md shadow-primary/20 transition hover:bg-primary/90 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
                       >
                         {isSubmitting ? "Submitting..." : "Submit Admission"}
-                        <FaCheckCircle />
+                        <FaCheckCircle aria-hidden="true" />
                       </button>
                     </div>
                   </form>
@@ -483,9 +540,9 @@ const AdmissionPage = () => {
                 <p className="text-sm font-bold uppercase tracking-wide text-gray-400">
                   Selected Course
                 </p>
-                <h2 className="mt-2 text-xl font-black leading-snug text-gray-900">
+                <h3 className="mt-2 text-xl font-black leading-snug text-gray-900">
                   {selectedCourse?.title || "Choose a course"}
-                </h2>
+                </h3>
 
                 {selectedCourse ? (
                   <div className="mt-4 space-y-3">
@@ -512,15 +569,15 @@ const AdmissionPage = () => {
                     </div>
                   </div>
                 ) : (
-                  <div className="mt-4 rounded-xl border border-dashed border-gray-200 bg-gray-50 p-5 text-sm font-medium text-gray-500">
+                  <p className="mt-4 rounded-xl border border-dashed border-gray-200 bg-gray-50 p-5 text-sm font-medium text-gray-500">
                     Select a course from the form to see the admission summary.
-                  </div>
+                  </p>
                 )}
 
                 <div className="mt-5 border-t border-gray-100 pt-5">
-                  <p className="text-sm font-black text-gray-900">
+                  <h4 className="text-sm font-black text-gray-900">
                     Payment Accounts
-                  </p>
+                  </h4>
                   <div className="mt-3 space-y-2">
                     {paymentMethods.map((method) => (
                       <div
@@ -541,7 +598,7 @@ const AdmissionPage = () => {
             </div>
           )}
         </div>
-      </section>
+      </main>
     </>
   );
 };

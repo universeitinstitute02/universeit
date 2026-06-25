@@ -4,6 +4,7 @@ import AddressNavbar from "../components/clientSide/AddressNavbar/AddressNavbar"
 import Navbar from "../components/clientSide/Navbar/Navbar";
 import Footer from "../components/clientSide/Footer/Footer";
 import WhatsAppButton from "../components/clientSide/WhatsAppButton";
+import ScrollToTop from '../ScrollToTop/ScrollToTop';
 
 const MainLayout = () => {
   const [open, setOpen] = useState(false);
@@ -14,6 +15,7 @@ const MainLayout = () => {
   }, [pathname]);
   return (
     <div className="relative bg-white">
+      <ScrollToTop />
       <AddressNavbar />
       <header className="sticky top-0 z-40">
         <Navbar />
